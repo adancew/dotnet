@@ -1,0 +1,110 @@
+﻿@using WebAppForRazorDemo.ViewModels;
+@model IEnumerable<WebAppForRazorDemo.ViewModels.ArticleViewModel>
+
+@{
+	ViewData["Title"] = "Index";
+}
+
+<h1>Index</h1>
+
+
+@section Overbody
+{
+<h1>Average price: @Model.Select(m => m.Price).Average()</h1>
+}
+
+
+<p>
+	<a asp-action="Create">Create New</a>
+</p>
+<table class="table table-bordered">
+	<thead>
+		<tr>
+			<th>
+				@Html.DisplayNameFor(model => model.Id)
+			</th>
+			<th>
+				@Html.DisplayNameFor(model => model.Name)
+			</th>
+			<th>
+				@Html.DisplayNameFor(model => model.Price)
+			</th>
+			<th>
+				@Html.DisplayNameFor(model => model.Category)
+			</th>
+			<th>
+				@Html.DisplayNameFor(model => model.ExpirationDate)
+			</th>
+			<th></th>
+		</tr>
+	</thead>
+	<tbody>
+		@foreach (var item in Model)
+		{
+			<tr>
+				<td>
+					@Html.DisplayFor(modelItem => item.Id)
+				</td>
+				<td>
+					@Html.DisplayFor(modelItem => item.Name)
+				</td>
+				<td>
+					@Html.DisplayFor(modelItem => item.Price)
+				</td>
+				<td>
+					@Html.DisplayFor(modelItem => item.Category)
+				</td>
+				<td>
+					@Html.DisplayFor(modelItem => item.ExpirationDate)
+				</td>
+				<td>
+					@Html.ActionLink("Edit", "Edit", new { id=item.Id  }) |
+					@Html.ActionLink("Details", "Details", new {id=item.Id  }) |
+					@Html.ActionLink("Delete", "Delete", new { id=item.Id  })
+				</td>
+			</tr>
+		}
+	</tbody>
+</table>
+
+@section Overview
+	{
+	<h1>Inventory Overview</h1>
+	<p>Inventory state as of: @DateTime.Now</p>
+	<p>Articles in invertory: @Model.Count()</p>
+	<p>Articles per category</p>
+
+	<table class="table table-bordered w-auto">
+		<thead>
+			<tr>
+				<th>@Html.DisplayNameFor(model => model.Category)</th>
+				<th>Count</th>
+			</tr>
+		</thead>
+		<tbody>
+			@{
+			var counts = Model
+						.GroupBy(article => article.Category)
+						.Select(group => new { 
+							Name = group.Key, 
+							Amount = group.Count() }
+						);
+			}
+
+			@foreach (var c in counts)
+			{
+				<tr>
+					<td>@c.Name</td>
+					<td>@c.Amount</td>
+				</tr>
+			}
+		</tbody>
+		<tfoot>
+			<tr>
+				<td>Together</td>
+				<td>@Model.Count()</td>
+			</tr>
+		</tfoot>
+	</table>
+
+}
