@@ -1,0 +1,14 @@
+﻿@{
+    ViewData["Title"] = "Home Page";
+}
+
+<div class="text-center">
+   
+    <h3>Użytkownik ma obecnie rolę: @ViewData["usertype"]</h3>
+
+    <form method="post">
+        @Html.CheckBox("checkResp")
+        <button type="submit">Ustaw na właściciela</button>
+    </form>
+
+</div>
