@@ -1,0 +1,70 @@
+﻿@page
+@model lista12.Pages.Shopping.IndexModel
+
+@{
+    ViewData["Title"] = "Catalog";
+}
+
+<h1>Catalog</h1>
+
+<form method="get">
+    <div class="form-group p-3 m-3">
+        <label>Select category</label>
+        <select asp-for="SelectedCategory" asp-items="Model.Categories" class="form-control">
+            <option value="">All Categories</option>
+        </select>
+        <button type="submit" class="btn btn-primary">Filter</button>
+    </div>
+</form>
+
+@if (Model.FilteredItems.Count() == 0)
+{
+    <h2 class=".text-secondary">There are no articles in this category</h2>
+    <a asp-page="./index" >clear filters</a>
+}
+else
+{
+    <div class="row">
+        @foreach (var item in Model.FilteredItems)
+        {
+
+            <div class="col-3">
+
+                <div class="card text-center mt-3">
+
+                    <div class="card-body">
+                        <h5 class="card-title">@item.Name</h5>
+
+                        @if (item.IsPromo)
+                        {
+                            <p class=".text-success">PROMOCJA</p>
+                        }
+                        else
+                        {
+                            <p class=".text-secondary">oferta standardowa</p>
+                        }
+
+
+                        @if (item.Filename != null && item.Filename != "")
+                        {
+                            <img src="/upload/@item.Filename" alt="Uploaded Picture"
+                                 style="object-fit:cover;height:100px;width:100px;" />
+                        }
+                        else
+                        {
+                            <img src="/upload/no_image.jpg" alt="No Picture"
+                                 style="height:100px;width:100px;" />
+                        }
+                        <p class="card-text">
+                            Price: @Html.DisplayFor(modelItem => item.Price)<br />
+                           
+                        </p>
+                        <a asp-page="./Details" asp-route-id="@item.Id" class="btn btn-secondary">Details</a>
+                    </div>
+                </div>
+            </div>
+        }
+
+    </div>
+
+}
